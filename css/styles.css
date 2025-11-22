@@ -1,0 +1,686 @@
+/* =========================================
+   1. VARIABLES Y COLORES (El ADN del diseño)
+   ========================================= */
+:root {
+    --primary: #4F46E5;       /* Azul Índigo Vibrante */
+    --primary-light: #818CF8; /* Azul suave */
+    --accent: #7C3AED;        /* Violeta para detalles */
+    --bg-body: #F3F4F6;       /* Gris muy suave de fondo */
+    --bg-card: #FFFFFF;       /* Blanco puro para las cajas */
+    --text-main: #1F2937;     /* Gris oscuro */
+    --text-muted: #9CA3AF;    /* Gris para textos secundarios */
+    --border: #E5E7EB;        /* Bordes sutiles */
+    --danger: #EF4444;        /* Rojo para borrar */
+    --success: #10B981;       /* Verde para logros */
+}
+
+/* =========================================
+   2. RESETEO Y BASES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    outline: none; /* Quita el borde azul feo al hacer clic */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+    line-height: 1.6;
+    padding: 20px;
+}
+
+/* Estilos generales para Iconos */
+.material-icons-round {
+    vertical-align: middle;
+    font-size: 1.2em;
+}
+
+/* =========================================
+   3. ENCABEZADO (HEADER) - CON IMAGEN DE FONDO
+   ========================================= */
+header {
+    /* Capa oscura + imagen (ruta relativa desde css/ -> assets/) */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../assets/portada.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
+    color: white;
+    padding: 60px 20px; /* Más altura para la imagen */
+    border-radius: 16px;
+    text-align: center;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    margin-bottom: 30px;
+    position: relative;
+    overflow: visible;
+}
+
+.titulo-mes {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid transparent;
+}
+
+.mantra {
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+/* =========================================
+   4. ESTRUCTURA RESPONSIVA (GRID PRINCIPAL)
+   ========================================= */
+.contenedor-principal {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Móvil: 1 columna */
+    gap: 25px;
+}
+
+/* En PC (pantallas mayores a 900px), dividimos en 2 columnas */
+@media (min-width: 900px) {
+    .dashboard-grid {
+        grid-template-columns: 350px 1fr; /* Diario (fijo) | Tracker (flexible) */
+    }
+}
+
+/* Estilo común para las tarjetas blancas */
+section, .seccion-objetivos, .seccion-stats {
+    background: var(--bg-card);
+    padding: 25px;
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+}
+
+h2, h3 {
+    color: var(--primary);
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 2px solid var(--bg-body);
+    padding-bottom: 10px;
+}
+
+/* =========================================
+   5. SECCIÓN DIARIO
+   ========================================= */
+.lista-diario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.renglon-diario {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+}
+
+.numero-dia {
+    font-weight: 700;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    min-width: 20px;
+}
+
+.entrada-texto {
+    flex: 1;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    min-height: 1.5em;
+}
+
+/* Placeholder truco para divs editables vacíos */
+.entrada-texto:empty:before {
+    content: attr(placeholder);
+    color: var(--text-muted);
+}
+
+/* =========================================
+   6. SECCIÓN TRACKER (HÁBITOS)
+   ========================================= */
+.contenedor-tracker {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto; /* Scroll si no cabe en móvil */
+    padding-bottom: 10px; /* Espacio para la barra de scroll */
+}
+
+.habits-grid {
+    flex: 1;
+    min-width: 400px;
+}
+
+/* LA GRILLA PERFECTA: 40px numero + 5 columnas iguales */
+.fila-encabezados, .fila-dia {
+    display: grid;
+    grid-template-columns: 40px repeat(5, 1fr); 
+    align-items: center;
+    text-align: center;
+    padding: 8px 0;
+}
+
+.fila-encabezados {
+    position: sticky;
+    top: 0; /* Se pega al llegar arriba */
+    background: var(--bg-card); /* Fondo para tapar lo que pasa por debajo */
+    background-color: var(--bg-card);
+    z-index: 50; /* Asegura que esté por encima del contenido (ajustado) */
+    box-shadow: 0 2px 4px -2px rgba(0,0,0,0.1); /* Sombra sutil */
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 10px;
+}
+
+.fila-dia {
+    border-bottom: 1px solid var(--bg-body);
+}
+
+.fila-dia:hover {
+    background-color: #F9FAFB;
+}
+
+.dia-label {
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+/* Checkboxes personalizados: solo relleno al marcar (sin marca) */
+input[type="checkbox"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    background: #fff;
+    cursor: pointer;
+    margin: 0 auto;
+    display: inline-block;
+    transition: background 0.12s ease, transform 0.12s ease, border-color 0.12s ease;
+}
+
+input[type="checkbox"]:hover {
+    transform: scale(1.04);
+}
+
+input[type="checkbox"]:focus {
+    outline: none;
+    box-shadow: 0 0 0 6px rgba(79, 70, 229, 0.06);
+}
+
+/* Estado marcado: relleno total con color principal; no icono */
+input[type="checkbox"]:checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    box-shadow: inset 0 -2px 0 rgba(0,0,0,0.06);
+}
+
+/* Fallback: si el navegador soporta accent-color, respetarlo en inputs nativos */
+@supports (accent-color: red) {
+    input[type="checkbox"] {
+        accent-color: var(--primary);
+    }
+}
+
+/* Gráfica Container */
+.graph-container {
+    width: 360px;
+    min-width: 300px;
+    border-left: 1px dashed var(--border);
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Hacer la gráfica más visible en escritorio */
+#grafica-progreso {
+    width: 100%;
+    min-height: 480px;
+}
+
+.titulo-progreso {
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+/* =========================================
+   7. FOOTER - OBJETIVOS (ACTUALIZADO)
+   ========================================= */
+.reflection-section {
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 25px;
+    background: transparent;
+    padding: 0;
+    border: none;
+    box-shadow: none;
+}
+
+@media (min-width: 768px) {
+    .reflection-section {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Lista de Objetivos */
+#lista-objetivos {
+    padding-left: 25px;
+    color: var(--text-main);
+    margin-bottom: 15px;
+}
+
+#lista-objetivos li {
+    margin-bottom: 8px;
+}
+
+/* Área de Input Nuevo Objetivo */
+.area-nuevo-objetivo {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Campo de texto solo con línea abajo */
+#input-objetivo {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 2px solid var(--border);
+    background: transparent;
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-main);
+    transition: border-color 0.3s;
+}
+
+#input-objetivo:focus {
+    border-bottom-color: var(--primary);
+}
+
+/* Botón de Texto Azul */
+.btn-texto-azul {
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 700;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    text-align: left;
+    padding: 0;
+    width: fit-content;
+}
+
+.btn-texto-azul:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   8. FOOTER - REFLEXIÓN (SLIDERS)
+   ========================================= */
+.cabecera-reflexion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.btn-master-editar {
+    background: var(--bg-body);
+    border: 1px solid var(--border);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    transition: all 0.2s;
+    cursor: pointer;
+}
+
+.btn-master-editar:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.slider-contenedor {
+    margin-bottom: 20px;
+}
+
+.info-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.valor-numero {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+/* Input Range Personalizado */
+input[type=range] {
+    width: 100%;
+    height: 6px;
+    background: var(--border);
+    border-radius: 5px;
+    appearance: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+input[type=range]::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* =========================================
+   9. MODO EDICIÓN (Lógica de Visualización)
+   ========================================= */
+
+/* CORRECCIÓN: Hacemos esta regla más específica para que gane */
+/* Le decimos: "Cualquier control de edición dentro de las stats, ESCONDELO" */
+.seccion-stats .control-edicion {
+    display: none;
+}
+
+/* Estilos para el botón borrar */
+.btn-eliminar {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    margin-right: 8px;
+    /* IMPORTANTE: Quitamos 'display: flex' de aquí para que no sobreescriba el ocultar.
+       El JS se encargará de ponerle el display correcto cuando pulsemos editar. */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Estilos para agregar nuevo slider */
+.btn-agregar-mas {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-body);
+    border: 2px dashed var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-agregar-mas:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+/* =========================================
+   10. NUEVAS FUNCIONALIDADES (Sticky y Reset)
+   ========================================= */
+
+/* --- A. Estilos del Botón Reiniciar en el Header --- */
+.header-top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: -20px;
+}
+
+.btn-icono-header {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: white;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: background 0.3s;
+}
+
+.btn-icono-header:hover {
+    background: rgba(255, 255, 255, 0.4);
+}
+
+
+/* --- B. Encabezados Pegajosos (Sticky Headers) --- */
+
+/* 1. Título del Diario Pegajoso */
+.panel-diario h2 {
+    position: sticky;
+    top: 0;
+    background: var(--bg-card);
+    z-index: 11;
+    padding-top: 20px;
+    margin-top: -20px;
+    border-bottom: 2px solid var(--bg-body);
+}
+
+/* Ajuste para la sección del tracker para que el sticky funcione bien dentro */
+.panel-tracker {
+    overflow: visible; /* Necesario en algunos navegadores para que sticky funcione */
+}
+
+/* =========================================
+   CORRECCIÓN FINAL: STICKY TRACKER
+   ========================================= */
+
+/* Asegura que el fondo tape los checks al bajar y fuerza el comportamiento en pantallas grandes */
+.fila-encabezados {
+    background-color: var(--bg-card);
+    z-index: 50; /* Ponemos un número alto para que esté encima de todo */
+    border-bottom: 2px solid var(--border);
+}
+
+@media (min-width: 900px) {
+    .contenedor-tracker {
+        overflow: visible !important; /* ¡ESTO ES LA CLAVE! */
+    }
+    
+    /* Ajuste fino para que no se corte la sombra */
+    .panel-tracker {
+        overflow: visible;
+    }
+
+/* =========================================
+   12. MODAL DE CONFIGURACIÓN (NUEVO)
+   ========================================= */
+
+/* Ajuste del Header para alinear título y botón */
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+/* Posicionamos el botón de Reiniciar (basura) en la esquina absoluta */
+.header-top-absolute {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 20; /* Asegura que el botón quede por encima del contenido del header */
+}
+
+/* Estilo del Botón "Cambiar Mes" (Pastilla Gris) */
+.btn-pill {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.btn-pill:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* Botón de editar para el tracker (misma apariencia que editar reflexiones) */
+.panel-tracker h2 .btn-master-editar {
+    margin-left: 12px;
+    font-size: 0.75rem;
+}
+
+/* Botón pequeño para eliminar habit (aparece en modo edición) */
+.btn-remove-habit {
+    background: none;
+    border: none;
+    color: var(--danger);
+    cursor: pointer;
+    display: none; /* se muestra en modo edición */
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* Mostrar controles en modo edición: la clase .editing la añadimos al contenedor del tracker */
+.contenedor-tracker.editing .control-edicion { display: inline-flex !important; }
+
+/* Ajustes para que la gráfica quede alineada y visualmente más grande */
+@media (min-width: 900px) {
+    .graph-container { width: 400px; min-width: 340px; }
+    #grafica-progreso { min-height: 520px; }
+}
+
+/* --- ESTILOS DE LA VENTANA MODAL --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fondo oscuro transparente */
+    display: none; /* Oculto por defecto */
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+    z-index: 1000;
+    backdrop-filter: blur(3px); /* Efecto borroso bonito */
+}
+
+/* Clase para mostrarlo con JS */
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-box h3 {
+    margin-bottom: 20px;
+    color: var(--text-main);
+    font-size: 1.2rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.form-group select, 
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.btn-secondary {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: var(--primary-light);
+}
+}
